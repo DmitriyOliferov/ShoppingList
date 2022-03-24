@@ -1,6 +1,7 @@
 package com.oliferov.shoppinglist.presentation
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
@@ -15,7 +16,7 @@ import com.oliferov.shoppinglist.presentation.ShopListAdapter.Companion.VIEW_TYP
 import com.oliferov.shoppinglist.presentation.ShopListAdapter.Companion.VIEW_TYPE_ENABLED
 import java.lang.RuntimeException
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var shopListAdapter: ShopListAdapter
@@ -37,8 +38,8 @@ class MainActivity : AppCompatActivity() {
         val buttonAddItem = findViewById<FloatingActionButton>(R.id.button_add_shop_item)
         buttonAddItem.setOnClickListener {
             if (isOnePaneMode()) {
-            startActivity(ShopItemActivity.newIntentAddItem(this))
-            }else{
+                startActivity(ShopItemActivity.newIntentAddItem(this))
+            } else {
                 launchFragment(ShopItemFragment.newInstanceAddItem())
             }
         }
@@ -86,13 +87,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupClickListener() {
-            shopListAdapter.onShopItemClickListener = {
-                if (isOnePaneMode()) {
-                    startActivity(ShopItemActivity.newIntentEditItem(this, it.id))
-                } else {
-                    launchFragment(ShopItemFragment.newInstanceEditItem(it.id))
-                }
+        shopListAdapter.onShopItemClickListener = {
+            if (isOnePaneMode()) {
+                startActivity(ShopItemActivity.newIntentEditItem(this, it.id))
+            } else {
+                launchFragment(ShopItemFragment.newInstanceEditItem(it.id))
             }
+        }
+    }
+
+    override fun onEditingFinishedListener() {
+        Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_SHORT).show()
+        supportFragmentManager.popBackStack()
     }
 
     private fun setupLongClickListener() {
@@ -101,15 +107,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun launchFragment(fragment: Fragment){
+    private fun launchFragment(fragment: Fragment) {
         supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.shop_item_container,fragment)
+            .replace(R.id.shop_item_container, fragment)
             .addToBackStack(null)
             .commit()
     }
 
-    private fun isOnePaneMode(): Boolean{
+    private fun isOnePaneMode(): Boolean {
         return shopItemContainer == null
     }
 }

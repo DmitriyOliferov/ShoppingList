@@ -18,7 +18,7 @@ import com.oliferov.shoppinglist.R
 import com.oliferov.shoppinglist.domain.ShopItem
 import java.lang.RuntimeException
 
-class ShopItemActivity : AppCompatActivity() {
+class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
     private var screenMode = MODE_UNKNOWN
     private var shopItemId = ShopItem.DEFAULT_ID
@@ -30,6 +30,10 @@ class ShopItemActivity : AppCompatActivity() {
         if(savedInstanceState == null) {
             launchRightMode()
         }
+    }
+
+    override fun onEditingFinishedListener() {
+        finish()
     }
 
     private fun launchRightMode() {
