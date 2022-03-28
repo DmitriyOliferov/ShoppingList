@@ -15,17 +15,21 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.oliferov.shoppinglist.R
+import com.oliferov.shoppinglist.databinding.ActivityMainBinding
+import com.oliferov.shoppinglist.databinding.ActivityShopItemBinding
 import com.oliferov.shoppinglist.domain.ShopItem
 import java.lang.RuntimeException
 
 class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
+    private lateinit var binding: ActivityShopItemBinding
     private var screenMode = MODE_UNKNOWN
     private var shopItemId = ShopItem.DEFAULT_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_shop_item)
+        binding = ActivityShopItemBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         parseIntent()
         if(savedInstanceState == null) {
             launchRightMode()
