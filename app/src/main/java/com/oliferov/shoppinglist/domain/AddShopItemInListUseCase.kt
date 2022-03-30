@@ -1,7 +1,7 @@
 package com.oliferov.shoppinglist.domain
 
 class AddShopItemInListUseCase(private val shopListRepository: ShopListRepository) {
-    fun addShopItemInList(shopItem: ShopItem){
-        shopListRepository.addShopItemInList(shopItem)
+    suspend fun addShopItemInList(shopItem: ShopItem){
+        shopListRepository.addShopItem(shopItem)
     }
 }
